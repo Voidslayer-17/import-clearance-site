@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T Concepts Global Resources LTD</title>
+
+<style>
+:root {
+  --azure: #fbff00;
+  --purple: #000000;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow';
+  background: #000f22;
+}
+
+header {
+  background: linear-gradient(90deg, var(--purple), var(--azure));
+  color: rgb(255, 251, 2);
+  padding: 15px;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  background: rgb(0, 0, 0);
+  padding: 10px;
+}
+
+nav button {
+  background: var(--purple);
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.container {
+  padding: 20px;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.product {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.product h4 {
+  margin: 10px 0 5px;
+}
+
+.product p {
+  color: var(--azure);
+  font-weight: bold;
+}
+
+.product button {
+  background: var(--azure);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cart {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 150px;
+  height: 25%;
+  background: white;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.2);
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.cart h3 {
+  color: var(--purple);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.checkout {
+  background: var(--purple);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>T Concepts Global Resources LTD</h1>
+  <p>...In God We Trust.</p>
+</header>
+
+<nav>
+  <button onclick="filter('all')">All</button>
+  <button onclick="filter('electronics')">Electronics</button>
+  <button onclick="filter('vehicles')">Vehicles</button>
+  <button onclick="filter('jewellery')">Jewellery</button>
+</nav>
+
+<div class="container">
+  <div class="products" id="products"></div>
+</div>
+
+<div class="cart">
+  <h3>🛒 Cart</h3>
+  <div id="cartItems"></div>
+  <p><strong>Total: Naira<span id="total">0</span></strong></p>
+  <button class="checkout" onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+const products = [
+  {name:"Cars", price:300000,category:"vehicles"},
+  {name:"Trucks", price:600000, category:"vehicles"},
+  {name:"Vans", price:900000, category:"vehicles"},
+  {name:"Minivans", price:900000, category:"vehicles"},
+  {name:"Rings", price:50000, category:"jewellery"},
+  {name:"Earrings", price:25000, category:"jewellery"},
+  {name:"Bangles/Bracelets", price:65000, category:"jewellery"},
+  {name:"All Electricity Using Items", price:400000, category:"electronics"},
+];
+
+let cart = [];
+
+function displayProducts(list) {
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+  list.forEach(p => {
+    container.innerHTML += `
+      <div class="product">
+        <h4>${p.name}</h4>
+        <p>${p.price}</p>
+        <button onclick='addToCart("${p.name}", ${p.price})'>Add to Cart</button>
+      </div>
+    `;
+  });
+}
+
+function filter(cat) {
+  if(cat === "all") displayProducts(products);
+  else displayProducts(products.filter(p => p.category === cat));
+}
+
+function addToCart(name, price) {
+  cart.push({name, price});
+  updateCart();
+}
+
+function updateCart() {
+  const items = document.getElementById("cartItems");
+  items.innerHTML = "";
+  let total = 0;
+  cart.forEach((item, index) => {
+    total += item.price;
+    items.innerHTML += `
+      <div class="cart-item">
+        <span>${item.name}</span>
+        <span>${item.price}</span>
+      </div>
+    `;
+  });
+  document.getElementById("total").innerText = total;
+}
+
+function checkout() {
+  if(cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+  alert("Order placed successfully! Dail 08057976201 or Email tconceptsbusinesscentre@gmail.com(Demo checkout)");
+  cart = [];
+  updateCart();
+}
+
+displayProducts(products);
+</script>
+
+</body>
+</html>
